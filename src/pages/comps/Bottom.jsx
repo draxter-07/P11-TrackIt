@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 
 export default function Bottom(){
     return(
-        <Bot>
-            <Link  to="/habitos">Hábitos</Link>
-            <Redonda><Link  to="/hoje">Hoje</Link></Redonda>
-            <Link  to="/habitos">Histórico</Link>
+        <Bot data-test="menu">
+            <Link to="/habitos" data-test="habit-link">Hábitos</Link>
+            <Redonda data-test="today-link"><Link to="/hoje">Hoje</Link></Redonda>
+            <Link to="/historico" data-test="history-link">Histórico</Link>
         </Bot>
     )
 }

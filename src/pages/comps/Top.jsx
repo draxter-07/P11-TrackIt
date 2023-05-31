@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export default function Top(){
     return(
-        <Topo>
+        <Topo data-test="header">
             <img src="https://imagepng.org/wp-content/uploads/2017/10/quadrado-preto-1.png"></img>
             <img src="https://imagepng.org/wp-content/uploads/2017/10/quadrado-preto-1.png"></img>
         </Topo>
