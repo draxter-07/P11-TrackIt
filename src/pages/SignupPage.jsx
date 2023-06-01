@@ -15,7 +15,6 @@ export default function SignupPage(){
         setDis(!dis);
         e.preventDefault();
         const dados = {email: email, name: name, image: photo, password: password};
-        console.log(dados);
         const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", dados);
         requisicao.then(resposta => {
             console.log(resposta.data);

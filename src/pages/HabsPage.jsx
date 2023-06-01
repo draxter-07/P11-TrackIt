@@ -4,10 +4,12 @@ import styled from 'styled-components'
 import { useState } from 'react'
 
 export default function HabsPage(){
+    let [diasClique, setDiasClique] = useState([['Domingo', 0], ['Segunda', 0], ['Terça', 0], ['Quarta', 0], ['Quinta', 0], ['Sexta', 0], ['Sábado', 0]])
     let dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
     let [selectDays, setSelectDays] = useState([])
     let [createArea, setCreateArea] = useState('none');
-    let habs = ['hábito'];
+    let [newHabName, setNewHabName] = useState('')
+    let habs = [['hábito', ['Segunda', 'Terça']]];
     const CreateHab = styled.div`
         width: 100%;
         padding: 15px;
@@ -64,16 +66,6 @@ export default function HabsPage(){
         flex-direction: row;
         height: auto;
         margin: 15px 0px 0px 0px;
-        button{
-            box-sizing: border-box;
-            background: #FFFFFF;
-            border: 1px solid #D5D5D5;
-            border-radius: 5px;
-            opacity: 0.5;
-            width: 30px;
-            margin: 0px 5px 0px 0px;
-            height: 30px;
-        }
     `
     const Botoes = styled.div`
         width: 100%;
@@ -122,48 +114,120 @@ export default function HabsPage(){
         let new_set = [...selectDays];
         new_set.push(id);
         setSelectDays(new_set);
+        let new2_set = [...diasClique];
+        for (let a = 0; a < new2_set.length; a++){
+            if (new2_set[a][0] == id){
+                new2_set[a][1] = 1
+            }
+        }
+        setDiasClique(new2_set)
+    }
+    function deselect_day(e){
+        let id = e.target.id;
+        let new_set = [];
+        for (let a = 0; a < selectDays.length; a++){
+            if (selectDays[a] != id){
+                new_set.push(selectDays[a])
+            }
+        }
+        setSelectDays(new_set);
+        let new2_set = [...diasClique];
+        for (let a = 0; a < new2_set.length; a++){
+            if (new2_set[a][0] == id){
+                new2_set[a][1] = 0;
+            }
+        }
+        setDiasClique(new2_set)
+    }
+    function ButtonDaysCreateHab(prop){
+        let backcolor = "#FFFFFF"
+        let color = '#D5D5D5'
+        if (prop.clicked == 1){
+            color = '#FFFFFF'
+            backcolor = '#D5D5D5'
+        }
+        const But = styled.button`
+            box-sizing: border-box;
+            background: ${backcolor};
+            border: 1px solid ${color};
+            color; ${color};
+            border-radius: 5px;
+            opacity: 0.5;
+            width: 30px;
+            margin: 0px 5px 0px 0px;
+            height: 30px;`
+        if (prop.clicked == 1){
+            return(
+                <But id={prop.day} onClick={(e) => deselect_day(e)} data-test="habit-day">{prop.day[0]}</But>
+            )
+        }
+        return(
+            <But id={prop.day} onClick={(e) => select_day(e)} data-test="habit-day">{prop.day[0]}</But>
+        )
+    }
+    function ButtonDaysHab(prop){
+        let backcolor = "#FFFFFF"
+        let color = '#D5D5D5'
+        for(let a = 0; a < habs[prop.index][1].length; a++){
+            if (habs[prop.index][1][a] == prop.day){
+                color = '#FFFFFF'
+                backcolor = '#D5D5D5'
+            }
+        }
+        const But = styled.button`
+            box-sizing: border-box;
+            background: ${backcolor};
+            border: 1px solid ${color};
+            color; ${color};
+            border-radius: 5px;
+            opacity: 0.5;
+            width: 30px;
+            margin: 0px 5px 0px 0px;
+            height: 30px;`
+        return(
+            <But disabled data-test="habit-day">{prop.day[0]}</But>
+        )
     }
     if (habs.length == 0){
         return(
             <>
-                <Top/>
-                <All>
-                    <MyHabs>
-                        Meus Hábitos
-                        <button data-test="habit-create-btn" onClick={criar_hab}>+</button>
-                    </MyHabs>
-                    <CreateHab data-test="habit-create-container">
-                        <input placeholder="nome do hábito" data-test="habit-name-input"></input>
-                        <Dias>
-                            {dias.map((dia)=>
-                                <button id={dia} data-test="habit-day">{dia[0]}</button>
-                            )}
-                        </Dias>
-                        <Botoes>
-                            <button data-test="habit-create-cancel-btn" onClick={criar_hab_cancel}>Cancelar</button>
-                            <button data-test="habit-create-save-btn">Salvar</button>
-                        </Botoes>
-                    </CreateHab>
-                    Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-                </All>
-                <Bottom/>
-            </>
+            <Top/>
+            <All>
+                <MyHabs>
+                    Meus Hábitos
+                    <button data-test="habit-create-btn" onClick={criar_hab}>+</button>
+                </MyHabs>
+                <CreateHab data-test="habit-create-container">
+                    <input placeholder="nome do hábito" data-test="habit-name-input" onChange={(e) => setNewHabName(e.target.value)}></input>
+                    <Dias>
+                        {diasClique.map((info)=>
+                            <ButtonDaysCreateHab day={info[0]} clicked={info[1]}/>
+                        )}
+                    </Dias>
+                    <Botoes>
+                        <button data-test="habit-create-cancel-btn" onClick={criar_hab_cancel}>Cancelar</button>
+                        <button data-test="habit-create-save-btn">Salvar</button>
+                    </Botoes>
+                </CreateHab>
+                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+        </All>
+        <Bottom/>
+        </>
             )
     }
     return(
         <>
         <Top/>
         <All>
-            <div>{selectDays}</div>
             <MyHabs>
                 Meus Hábitos
                 <button data-test="habit-create-btn" onClick={criar_hab}>+</button>
             </MyHabs>
             <CreateHab data-test="habit-create-container">
-                <input placeholder="nome do hábito" data-test="habit-name-input"></input>
+                <input placeholder="nome do hábito" data-test="habit-name-input" onChange={(e) => setNewHabName(e.target.value)}></input>
                 <Dias>
-                    {dias.map((dia)=>
-                        <button id={dia} data-test="habit-day" onClick={(e) => select_day(e)}>{dia[0]}</button>
+                    {diasClique.map((info)=>
+                        <ButtonDaysCreateHab day={info[0]} clicked={info[1]}/>
                     )}
                 </Dias>
                 <Botoes>
@@ -173,10 +237,10 @@ export default function HabsPage(){
             </CreateHab>
             {habs.map((habito)=>
                 <Hab>
-                    {habito}
+                    {habito[0]}
                     <Dias>
                         {dias.map((dia)=>
-                            <button day={dia}>{dia[0]}</button>
+                            <ButtonDaysHab day={dia} index={habs.indexOf(habito)}/>
                         )}
                     </Dias>
                 </Hab>

@@ -13,11 +13,11 @@ export default function LoginPage(){
         setDis(!dis);
         e.preventDefault();
         const dados = {email: email, password: password};
-        console.log(dados);
         const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", dados);
         requisicao.then(resposta => {
             console.log(resposta.data);
-            navigate('/hoje');});
+            //navigate('/hoje');
+        });
         requisicao.catch(resposta => {
             alert(resposta.response.data.message);
             setDis(dis);})

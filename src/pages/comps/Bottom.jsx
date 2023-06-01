@@ -40,7 +40,7 @@ const Redonda = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 80px;
-    background: black;
+    background: #52B6FF;;
     display: flex;
     align-items: center;
     justify-content: center;
