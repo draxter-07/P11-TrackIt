@@ -25,17 +25,6 @@ export default function HabsPage(){
                 </Lado>
                 <button>v</button>
             </Hab>
-            <Hab>
-                <Lado>
-                    Nome hábito
-                    <Info>
-                        Sequência 
-                        <br/>
-                        Recorde
-                    </Info>
-                </Lado>
-                <button>v</button>
-            </Hab>
         </All>
         <Bottom/>
         </>

@@ -9,13 +9,15 @@ export default function LoginPage(){
     let [dis, setDis] = useState(false)
     let disAbled = createContext(dis);
     let navigate = useNavigate();
+    let [info, setInfo] = useState(null);
     function fazer_cadastro(e){
+        console.log(e.target.parentElement.parentElement)
         setDis(!dis);
         e.preventDefault();
         const dados = {email: email, password: password};
         const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", dados);
         requisicao.then(resposta => {
-            console.log(resposta.data);
+            console.log(resposta.data)
             //navigate('/hoje');
         });
         requisicao.catch(resposta => {

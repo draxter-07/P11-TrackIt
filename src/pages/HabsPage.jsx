@@ -1,7 +1,9 @@
 import Top from './comps/Top.jsx'
 import Bottom from './comps/Bottom.jsx'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function HabsPage(){
     let [diasClique, setDiasClique] = useState([['Domingo', 0], ['Segunda', 0], ['Terça', 0], ['Quarta', 0], ['Quinta', 0], ['Sexta', 0], ['Sábado', 0]])
@@ -9,7 +11,18 @@ export default function HabsPage(){
     let [selectDays, setSelectDays] = useState([])
     let [createArea, setCreateArea] = useState('none');
     let [newHabName, setNewHabName] = useState('')
-    let habs = [['hábito', ['Segunda', 'Terça']]];
+    //let [habs = [['hábito', ['Segunda', 'Terça']]];
+    let [habs, setHabs] = useState([]);
+    let navigate = useNavigate();
+    const config = {headers: {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTIxMiwiaWF0IjoxNjg1NjQyNDY2fQ.keMLdCZJAj8WcPHKEwR8Vosrs1ZnFHtwjdfYpmw61ew"}}
+    useEffect(() => {
+		const requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
+		requisicao.then(resposta => {
+			setHabs(resposta.data);
+            console.log(resposta.data)
+		});
+	}, []);
+
     const CreateHab = styled.div`
         width: 100%;
         padding: 15px;
@@ -106,6 +119,18 @@ export default function HabsPage(){
     function criar_hab(){
         setCreateArea('inline');
     }
+    function criar_hab_save(){
+        let select_days_num = [];
+        for (let a = 0; a < selectDays.length; a++){
+            select_days_num.push(dias.indexOf(selectDays[a][0]))
+        }
+        const body = {name: newHabName, days: select_days_num}
+        const requisicao = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', body, config)
+        requisicao.then(resposta=> {
+            console.log(resposta.data)
+        });
+        navigate('/habitos')
+    }
     function criar_hab_cancel(){
         setCreateArea('none');
     }
@@ -168,7 +193,7 @@ export default function HabsPage(){
     function ButtonDaysHab(prop){
         let backcolor = "#FFFFFF"
         let color = '#D5D5D5'
-        for(let a = 0; a < habs[prop.index][1].length; a++){
+        for(let a = 0; a < habs[prop.index].days.length; a++){
             if (habs[prop.index][1][a] == prop.day){
                 color = '#FFFFFF'
                 backcolor = '#D5D5D5'
@@ -190,7 +215,7 @@ export default function HabsPage(){
     }
     if (habs.length == 0){
         return(
-            <>
+        <>
             <Top/>
             <All>
                 <MyHabs>
@@ -206,12 +231,12 @@ export default function HabsPage(){
                     </Dias>
                     <Botoes>
                         <button data-test="habit-create-cancel-btn" onClick={criar_hab_cancel}>Cancelar</button>
-                        <button data-test="habit-create-save-btn">Salvar</button>
+                        <button data-test="habit-create-save-btn" onClick={criar_hab_save}>Salvar</button>
                     </Botoes>
                 </CreateHab>
                 Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-        </All>
-        <Bottom/>
+            </All>
+            <Bottom/>
         </>
             )
     }
@@ -232,12 +257,12 @@ export default function HabsPage(){
                 </Dias>
                 <Botoes>
                     <button data-test="habit-create-cancel-btn" onClick={criar_hab_cancel}>Cancelar</button>
-                    <button data-test="habit-create-save-btn">Salvar</button>
+                    <button data-test="habit-create-save-btn" onClick={criar_hab_save}>Salvar</button>
                 </Botoes>
             </CreateHab>
             {habs.map((habito)=>
                 <Hab>
-                    {habito[0]}
+                    {habito.name}
                     <Dias>
                         {dias.map((dia)=>
                             <ButtonDaysHab day={dia} index={habs.indexOf(habito)}/>
