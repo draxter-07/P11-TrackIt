@@ -19,7 +19,6 @@ export default function HabsPage(){
 		const requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
 		requisicao.then(resposta => {
 			setHabs(resposta.data);
-            console.log(resposta.data)
 		});
 	}, []);
 
@@ -108,6 +107,7 @@ export default function HabsPage(){
         }
     `
     const Hab = styled.div`
+        position: relative;
         width: 100%;
         padding: 15px;
         height: auto;
@@ -115,6 +115,14 @@ export default function HabsPage(){
         margin: 0px 0px 15px;  
         border-radius: 5px;
         font-size: 20px;
+    `
+    const Lixeira = styled.div`
+        position: absolute;
+        top: 8px;
+        left: 332px;
+        background: red;
+        width: 13px;
+        height: 10px;
     `
     function criar_hab(){
         setCreateArea('inline');
@@ -126,13 +134,28 @@ export default function HabsPage(){
         }
         const body = {name: newHabName, days: select_days_num}
         const requisicao = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', body, config)
-        requisicao.then(resposta=> {
-            console.log(resposta.data)
+        requisicao.then(() =>{
+            const requis = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
+		    requis.then(resposta => {
+			setHabs(resposta.data);
         });
-        navigate('/habitos')
+        });
     }
     function criar_hab_cancel(){
         setCreateArea('none');
+    }
+    function deleteHab(e){
+        let id = e.target.id;
+        if (confirm('Você tem certeza?') == true)
+            {
+                const requisicao = axios.delete('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/' + id, config);
+                requisicao.then(resposta =>{
+                    console.log(resposta.data)
+                })
+                requisicao.catch(resposta => {
+                    alert(resposta.response.data.message);})
+                navigate('/habitos')
+            }
     }
     function select_day(e){
         let id = e.target.id;
@@ -268,6 +291,7 @@ export default function HabsPage(){
                             <ButtonDaysHab day={dia} index={habs.indexOf(habito)}/>
                         )}
                     </Dias>
+                    <Lixeira><button id={habito.id} onClick={(e) => deleteHab(e)}></button></Lixeira>
                 </Hab>
             )}
         </All>
