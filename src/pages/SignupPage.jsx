@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState, createContext, useContext } from 'react'
+import LogoSite from './assets/logo.svg'
 
 export default function SignupPage(){
     let [email, setEmail] = useState(null)
@@ -25,7 +26,7 @@ export default function SignupPage(){
     }
     return(
         <>
-            <Logo><img src="https://imagepng.org/wp-content/uploads/2017/10/quadrado-preto-1.png"/></Logo>
+            <Logo><img src={LogoSite}/></Logo>
             <Forms>
                 <input disabled={useContext(disAbled)} placeholder='email' data-test="email-input" onChange={(e) => setEmail(e.target.value)}/>
                 <input disabled={useContext(disAbled)} type="password" placeholder='senha' data-test="password-input"  onChange={(e) => setPassword(e.target.value)}/>

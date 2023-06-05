@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useState, createContext, useContext} from 'react'
+import LogoSite from './assets/logo.svg'
 
 export default function LoginPage(){
     let [password, setPassword] = useState(null)
@@ -9,7 +10,6 @@ export default function LoginPage(){
     let [dis, setDis] = useState(false)
     let disAbled = createContext(dis);
     let navigate = useNavigate();
-    let [info, setInfo] = useState(null);
     function fazer_cadastro(e){
         console.log(e.target.parentElement.parentElement)
         setDis(!dis);
@@ -18,7 +18,7 @@ export default function LoginPage(){
         const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", dados);
         requisicao.then(resposta => {
             console.log(resposta.data)
-            navigate('/hoje');
+            //navigate('/hoje');
         });
         requisicao.catch(resposta => {
             alert(resposta.response.data.message);
@@ -26,7 +26,7 @@ export default function LoginPage(){
     }
     return(
         <>
-            <Logo><img src="https://imagepng.org/wp-content/uploads/2017/10/quadrado-preto-1.png"/></Logo>
+            <Logo><img src={LogoSite}/></Logo>
             <Forms>
                 <input disabled={useContext(disAbled)} placeholder='email'data-test="email-input" onChange={(e) => setEmail(e.target.value)}/>
                 <input disabled={useContext(disAbled)} type='password' placeholder='senha' data-test="password-input" onChange={(e) => setPassword(e.target.value)}/>

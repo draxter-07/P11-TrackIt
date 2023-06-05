@@ -15,10 +15,10 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LoginPage/>}/>
-            <Route path="/cadastro" element={<SignupPage/>}/>
-            <Route path="/habitos" element={<HabsPage/>}/>
-            <Route path="/hoje" element={<HojePage/>}/>
-            <Route path="/historico" element={<HistPage/>}/>
+              <Route path="/cadastro" element={<SignupPage/>}/>
+              <Route path="/habitos" element={<HabsPage/>}/>
+              <Route path="/hoje" element={<HojePage/>}/>
+              <Route path="/historico" element={<HistPage/>}/>
           </Routes>
         </BrowserRouter>
     </>

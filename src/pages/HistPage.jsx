@@ -1,5 +1,5 @@
-import Top from './comps/Top.jsx'
-import Bottom from './comps/Bottom.jsx'
+import Top from './Top.jsx'
+import Bottom from './Bottom.jsx'
 
 export default function HistPage(){
     return(

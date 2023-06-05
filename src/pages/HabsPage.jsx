@@ -1,9 +1,11 @@
-import Top from './comps/Top.jsx'
-import Bottom from './comps/Bottom.jsx'
+import Top from './Top.jsx'
+import Bottom from './Bottom.jsx'
 import styled from 'styled-components'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import PlusSign from './assets/plus.svg'
+import Trash from './assets/dump.svg'
 
 export default function HabsPage(){
     let [diasClique, setDiasClique] = useState([['Domingo', 0], ['Segunda', 0], ['Terça', 0], ['Quarta', 0], ['Quinta', 0], ['Sexta', 0], ['Sábado', 0]])
@@ -14,14 +16,18 @@ export default function HabsPage(){
     //let [habs = [['hábito', ['Segunda', 'Terça']]];
     let [habs, setHabs] = useState([]);
     let navigate = useNavigate();
-    const config = {headers: {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTIxMiwiaWF0IjoxNjg1NjQyNDY2fQ.keMLdCZJAj8WcPHKEwR8Vosrs1ZnFHtwjdfYpmw61ew"}}
+    const config = {headers: {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTIxMiwiaWF0IjoxNjg1OTcwNjYwfQ.w06JFqYh-lD2KQL_WxR8CFzofXS0FEr-OubI_K84Iew"}}
     useEffect(() => {
 		const requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
 		requisicao.then(resposta => {
 			setHabs(resposta.data);
+            console.log(resposta.data)
+            //const requisicaos = axios.delete('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/' + resposta.data[0].id, config);
+            //    requisicaos.then(resposta =>{
+            //        console.log(resposta.data)
+            //    })
 		});
 	}, []);
-
     const CreateHab = styled.div`
         width: 100%;
         padding: 15px;
@@ -66,7 +72,7 @@ export default function HabsPage(){
             height: 25px;
             background: #52B6FF;
             border-radius: 4.63636px;
-            padding: 1px;
+            padding: 5px;
             color: white;
             border: none;
             text-align: center;
@@ -140,6 +146,8 @@ export default function HabsPage(){
 			setHabs(resposta.data);
         });
         });
+        setNewHabName(null);
+        setSelectDays([]);
     }
     function criar_hab_cancel(){
         setCreateArea('none');
@@ -243,7 +251,7 @@ export default function HabsPage(){
             <All>
                 <MyHabs>
                     Meus Hábitos
-                    <button data-test="habit-create-btn" onClick={criar_hab}>+</button>
+                    <button data-test="habit-create-btn" onClick={criar_hab}><img src={PlusSign}/></button>
                 </MyHabs>
                 <CreateHab data-test="habit-create-container">
                     <input placeholder="nome do hábito" data-test="habit-name-input" onChange={(e) => setNewHabName(e.target.value)}></input>
@@ -269,7 +277,7 @@ export default function HabsPage(){
         <All>
             <MyHabs>
                 Meus Hábitos
-                <button data-test="habit-create-btn" onClick={criar_hab}>+</button>
+                <button data-test="habit-create-btn" onClick={criar_hab}><img src={PlusSign}/></button>
             </MyHabs>
             <CreateHab data-test="habit-create-container">
                 <input placeholder="nome do hábito" data-test="habit-name-input" onChange={(e) => setNewHabName(e.target.value)}></input>
@@ -291,7 +299,7 @@ export default function HabsPage(){
                             <ButtonDaysHab day={dia} index={habs.indexOf(habito)}/>
                         )}
                     </Dias>
-                    <Lixeira><button id={habito.id} onClick={(e) => deleteHab(e)}></button></Lixeira>
+                    <Lixeira><button id={habito.id} onClick={(e) => deleteHab(e)}><img src={Trash}/></button></Lixeira>
                 </Hab>
             )}
         </All>

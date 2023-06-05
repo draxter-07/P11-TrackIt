@@ -1,10 +1,11 @@
 import styled from "styled-components"
+import MiniLogo from './assets/logo-mini.svg'
 
 export default function Top(prop){
     return(
         <Topo data-test="header">
-            <img src="https://imagepng.org/wp-content/uploads/2017/10/quadrado-preto-1.png"></img>
-            <img src={prop.info}></img>
+            <img src={MiniLogo}></img>
+            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdiWiEKZLiLulZfHbHicR4vSPiZhKRkZhdsoMKz0EG8g&s'></img>
         </Topo>
     )
 }
@@ -26,10 +27,11 @@ const Topo = styled.div`
     z-index: 1;
     & :nth-child(1) {
         width: 50px;
-        height: 10px;
+        height: 50px;
     }
     & :nth-child(2) {
         width: 50px;
+        height: 50px;
         border-radius: 50px;
     }
 `
